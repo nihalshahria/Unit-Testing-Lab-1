@@ -1,12 +1,12 @@
 package task1;
 
 public class Payment {
-    public String customerId;
+    protected String customerId;
     public String name;
-    public String cardType;
-    public String cardNo;
-    public void pay(float total) {
-        System.out.println("Payment is made");
+    private String cardType;
+    private String cardNo;
+    public String pay(double total) {
+        return "Payment of " + total + " is successful";
     }
 
     public Payment(String customerId, String name, String cardType, String cardNo) {

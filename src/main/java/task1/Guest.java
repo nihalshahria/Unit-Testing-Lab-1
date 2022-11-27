@@ -3,23 +3,22 @@ package task1;
 import java.util.List;
 
 public class Guest {
-    private Shop shop;
-    public Guest(Shop shop) {
-        this.shop = shop;
+    private List<Product> products;
+
+    public Guest(List<Product> products) {
+        this.products = products;
     }
 
-    public List<Product> viewProducts(){
-        return  shop.products;
-    }
-
-    public  Customer GetRegistered(String id, String name, String address, int phoneNo){
-        for (var customer: shop.customers) {
-            if(customer.id == id){
-                throw new IllegalArgumentException("id: "+id + " already exists");
-            }
+    public String viewProducts() {
+        String retMsg = "";
+        for (Product product : products) {
+            retMsg += product.getId() + " " + product.getName() + " " + product.getGroup() + " " + product.getSubgroup() + " " + product.getPrice() + "\n";
         }
-        var newCustomer = new Customer(id, name, address, phoneNo, shop);
-        return newCustomer;
+        return retMsg;
+    }
+
+    public String GetRegistered(String id, String name, String address, int phoneNo) {
+        return "New Customer registerd with id: " + id + " name: " + name + " address: " + address + " phoneNo: " + phoneNo;
     }
 
 }

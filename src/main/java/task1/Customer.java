@@ -3,51 +3,55 @@ package task1;
 import java.util.List;
 
 public class Customer {
-    public String id;
-    public String name;
-    public String address;
-    public int phoneNo;
+    private String id;
+    protected String name;
+    protected String address;
+    protected String phoneNo;
+    private List<Product> products;
     private Cart cart;
-    private Shop shop;
 
-    public Customer(String id, String name, String address, int phoneNo, Shop shop) {
+    public Customer(String id, String name, String address, String phoneNo, List<Product> products) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.phoneNo = phoneNo;
-        this.shop = shop;
-        shop.customers.add(this);
+        this.products = products;
+        cart = new Cart();
     }
 
-    public List<Product> viewProducts(){
-        return shop.products;
-    }
-    public String addToCart(Product product){
-        if(cart == null)cart = new Cart();
-        cart.products.add(product);
-        return product.name+" is added to cart";
-    }
-
-    public String deleteFromCart(Product product){
-        if (cart.products.contains(product)){
-            cart.products.remove(product);
-            return product.name+" removed from cart";
+    public String getProducts() {
+        String productString = "";
+        for (Product product : products) {
+            productString += product.getName() + ", ";
         }
-        return product.name+" doesn't exist in the cart";
+        return productString;
     }
 
-    public String makePayment(float amount, Payment payment){
-//        var paymentReciept = new Payment(this.id, this.name, "Visa", this.id);
-        payment.pay(amount);
-        return amount+" paid with "+payment.cardType + " card";
+    public void addToCart(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                cart.addProduct(product);
+            }
+        }
     }
 
-    public String buyProducts(Payment payment){
-        var amount = cart.total();
-        System.out.println(makePayment(amount, payment));
-        shop.paidOrders.add(cart);
-        return "Order placed";
+    public void deleteFromCart(int id) {
+        for (Product product : products) {
+            if (product.getId() == id) {
+                cart.removeProduct(id);
+            }
+        }
     }
 
+    public Cart getCart() {
+        return cart;
+    }
 
+    public void buyProducts() {
+        cart = new Cart();
+    }
+
+    public void makePayment(Payment payment) {
+        payment.pay(cart.getTotalPrice());
+    }
 }
